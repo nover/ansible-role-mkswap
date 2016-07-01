@@ -1,6 +1,6 @@
 galaxy_info:
   author: Nicklas Laine Overgaard
-  description: 
+  description: Ansible role for creating swapspace
   company: SKARP ApS
   
   # If the issue tracker for your role is not on github, uncomment the
