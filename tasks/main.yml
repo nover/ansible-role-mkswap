@@ -1,0 +1,22 @@
+---
+# tasks file for mkswap
+- name: Create swapfile
+  command: fallocate -l 4G /swapfile
+  args:
+    creates: /swapfile
+- name: chmod swapfile
+  command: chmod 600 /swapfile
+- name: Initialize swapfile 
+  command: mkswap /swapfile
+  args:
+    creates: /.swapfile.created
+- name: start swapping now
+  command: swapon /swapfile
+  args:
+    creates: /.swapfile.swapon
+- name: make swap permanent
+  lineinfile: dest=/etc/fstab line='/swapfile none swap sw 0 0'
+- name: improve swappiness
+  command: sysctl vm.swappiness=10
+- name: save swappiness
+  lineinfile: dest=/etc/sysctl.conf line='vm.swappiness=10'
