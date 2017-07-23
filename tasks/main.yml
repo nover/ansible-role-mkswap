@@ -7,11 +7,11 @@
 - name: chmod swapfile
   command: chmod 600 /swapfile
 - name: Initialize swapfile 
-  command: mkswap /swapfile
+  command: mkswap /swapfile && touch /.swapfile.created
   args:
     creates: /.swapfile.created
 - name: start swapping now
-  command: swapon /swapfile
+  command: swapon /swapfile && /.swapfile.swapon
   args:
     creates: /.swapfile.swapon
 - name: make swap permanent
