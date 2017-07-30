@@ -7,13 +7,21 @@
 - name: chmod swapfile
   command: chmod 600 /swapfile
 - name: Initialize swapfile 
-  command: mkswap /swapfile && touch /.swapfile.created
+  command: mkswap /swapfile
+  register: mkswapfile
   args:
     creates: /.swapfile.created
+- name: flag swap as ok
+  command: touch /.swapfile.created
+  when: mkswapfile
 - name: start swapping now
-  command: swapon /swapfile && /.swapfile.swapon
+  command: swapon /swapfile
+  register: swapon
   args:
     creates: /.swapfile.swapon
+- name: mark swapon
+  command: touch /.swapfile.swapon
+  when: swapon
 - name: make swap permanent
   lineinfile: dest=/etc/fstab line='/swapfile none swap sw 0 0'
 - name: improve swappiness
